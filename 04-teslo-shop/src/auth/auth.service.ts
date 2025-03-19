@@ -53,7 +53,7 @@ export class AuthService {
         select: { email: true, password: true },
       });
       // const user = await this.userRepository.findOneBy({ email });
-console.log(user);
+
       if(!user)
         throw new UnauthorizedException('Credentials are not valid');
 
