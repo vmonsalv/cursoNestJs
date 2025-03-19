@@ -12,7 +12,8 @@ export class User {
     email: string;
 
     @Column('varchar', {
-        nullable: false
+        nullable: false,
+        select: false,
     })
     password: string;
 
