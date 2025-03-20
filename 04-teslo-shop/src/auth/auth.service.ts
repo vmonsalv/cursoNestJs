@@ -39,7 +39,7 @@ export class AuthService {
       await this.userRepository.save(user);
       const { password: hash, ...restUser } = user;
 
-      return restUser;
+      return { restUser, token: this.getJwtToken({ id: user.id }) };
     } catch (error) {
       this.handlerDBExceptions(error);
     }
@@ -52,7 +52,7 @@ export class AuthService {
     // se usa findOne xq columna se configuró select: false,
     const user = await this.userRepository.findOne({
       where: { email },
-      select: { email: true, password: true },
+      select: { email: true, password: true, id: true },
     });
     // const user = await this.userRepository.findOneBy({ email });
 
@@ -61,7 +61,9 @@ export class AuthService {
     if (!bcrypt.compareSync(password, user.password))
       throw new UnauthorizedException('Credentials are not valid');
 
-    return { ...user, token: this.getJwtToken({ email: user.email }) };
+    const { id: hash, ...restUser } = user;
+
+    return { restUser, token: this.getJwtToken({ id: user.id }) };
     // } catch (error) {
     //  UnauthorizedException se va para el catch
     //   console.log(error);
