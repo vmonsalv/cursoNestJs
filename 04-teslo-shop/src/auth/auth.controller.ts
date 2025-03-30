@@ -23,6 +23,7 @@ import { IncomingHttpHeaders } from 'http';
 import { UserRoleGuard } from './guards/user-role/user-role.guard';
 import { RoleProtected } from './decorators/role-protected.decorator';
 import { ValidRoles } from './interfaces/validRoles';
+import { Auth } from './decorators/auth.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -74,4 +75,15 @@ export class AuthController {
     }
   }
 
+  @Get('private3')
+  @Auth(ValidRoles.superUser)
+  privateRoute3(
+    @GetUser() user: User,
+  ) {
+    return {
+      ok: true,
+      message: 'Hola mundo private',
+      user,
+    }
+  }
 }
