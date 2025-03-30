@@ -39,7 +39,7 @@ export class AuthService {
       await this.userRepository.save(user);
       const { password: hash, ...restUser } = user;
 
-      return { restUser, token: this.getJwtToken({ id: user.id }) };
+      return { ...restUser, token: this.getJwtToken({ id: user.id }) };
     } catch (error) {
       this.handlerDBExceptions(error);
     }
@@ -55,22 +55,24 @@ export class AuthService {
       select: { email: true, password: true, id: true },
     });
     // const user = await this.userRepository.findOneBy({ email });
-console.log(user);
+
     if (!user) throw new UnauthorizedException('Credentials are not valid');
-    console.log('1', password);
-    console.log('2', user.password);
-    console.log('compare', bcrypt.compareSync(password, user.password));
+
     if (!bcrypt.compareSync(password, user.password))
       throw new UnauthorizedException('Credentials are not valid');
 
     const { id: hash, ...restUser } = user;
 
-    return { restUser, token: this.getJwtToken({ id: user.id }) };
+    return { ...restUser, token: this.getJwtToken({ id: user.id }) };
     // } catch (error) {
     //  UnauthorizedException se va para el catch
     //   console.log(error);
     //   this.handlerDBExceptions(error);
     // }
+  }
+
+  checkAuthStatus(user: User) {
+    return { ...user, token: this.getJwtToken({ id: user.id }) };
   }
 
   private getJwtToken(payload: JwtPayload) {

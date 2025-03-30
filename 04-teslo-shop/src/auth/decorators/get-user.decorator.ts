@@ -6,7 +6,7 @@ export const GetUser = createParamDecorator(
         // console.log({ data });
         const  req = context.switchToHttp().getRequest();
         const user = req.user;
-
+        console.log({ user });
         if(!user)
             throw new InternalServerErrorException('Usuario no encontrado (request)');
 
