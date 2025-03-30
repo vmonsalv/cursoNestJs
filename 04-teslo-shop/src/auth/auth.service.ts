@@ -55,9 +55,11 @@ export class AuthService {
       select: { email: true, password: true, id: true },
     });
     // const user = await this.userRepository.findOneBy({ email });
-
+console.log(user);
     if (!user) throw new UnauthorizedException('Credentials are not valid');
-
+    console.log('1', password);
+    console.log('2', user.password);
+    console.log('compare', bcrypt.compareSync(password, user.password));
     if (!bcrypt.compareSync(password, user.password))
       throw new UnauthorizedException('Credentials are not valid');
 
