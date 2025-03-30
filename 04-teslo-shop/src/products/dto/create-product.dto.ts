@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IS_ARRAY,
   IsArray,
@@ -11,10 +12,17 @@ import {
 } from 'class-validator';
 
 export class CreateProductDto {
+
+  @ApiProperty({
+    nullable: false,
+    description: 'Product title (unique)',
+    minLength: 1,
+  })
   @IsString()
   @MinLength(1)
   title: string;
 
+  @ApiProperty()
   @IsNumber()
   @IsPositive()
   @IsOptional()
@@ -24,27 +32,33 @@ export class CreateProductDto {
   @IsOptional()
   description?: string;
 
+  @ApiProperty()
   @IsString()
   @IsOptional()
   slug?: string;
 
+  @ApiProperty()
   @IsInt()
   @IsPositive()
   @IsOptional()
   stock?: number;
 
+  @ApiProperty()
   @IsString({ each: true })
   @IsArray()
   sizes: string[];
 
+  @ApiProperty()
   @IsIn(['men', 'women', 'kid', 'unisex'])
   gender: string;
 
+  @ApiProperty()
   @IsString({ each: true })
   @IsArray()
   @IsOptional()
   tags: string[];
 
+  @ApiProperty()
   @IsString({ each: true })
   @IsArray()
   @IsOptional()
