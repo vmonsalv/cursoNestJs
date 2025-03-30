@@ -32,13 +32,13 @@ export const initialData: SeedData = {
         {
             email: 'usuario1@nest.com', 
             fullName: 'Usuario 1',
-            password: '123',
+            password: 'Abc123',
             roles: ['user', 'admin']
         },
         {
             email: 'usuario2@nest.com',
             fullName: 'Usuario 2',
-            password: '123',
+            password: 'Abc123',
             roles: ['user']
         }
     ],
