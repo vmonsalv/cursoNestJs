@@ -21,6 +21,8 @@ import { User } from './entities/user.entity';
 import { GetRawHeaders } from './decorators/get-rawHeaders.decorator';
 import { IncomingHttpHeaders } from 'http';
 import { UserRoleGuard } from './guards/user-role/user-role.guard';
+import { RoleProtected } from './decorators/role-protected.decorator';
+import { ValidRoles } from './interfaces/validRoles';
 
 @Controller('auth')
 export class AuthController {
@@ -58,7 +60,9 @@ export class AuthController {
 
   @Get('private2')
   // esto no lo recomienda net xq puede haber error de escritura
-  @SetMetadata('roles', ['admin', 'super-user'])
+  // @SetMetadata('roles', ['admin', 'super-user'])
+  //alternativa a SetMetadata -> custom decorator
+  @RoleProtected(ValidRoles.superUser, ValidRoles.admin, ValidRoles.user)
   @UseGuards(AuthGuard(), UserRoleGuard)
   privateRoute2(
     @GetUser() user: User,
