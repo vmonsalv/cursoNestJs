@@ -13,12 +13,20 @@ export const connectToServer = () => {
 
 const addListener = (socket: Socket) => {
     const serverStatusLabel = document.querySelector("#server-status") as Element;
-
+    const clientesUl  = document.querySelector("#clients-ul") as Element;
     socket.on('connect', () => {
         serverStatusLabel.innerHTML = 'connected';
     });
 
     socket.on('disconnect', () => {
         serverStatusLabel.innerHTML = 'disconnected';
+    });
+
+    socket.on('clients-updated', (clients: string[]) => {
+        let clienstHtml = ''
+        clients.forEach(clientId => {
+            clienstHtml += `<li>${clientId}</li>`            
+        });
+        clientesUl.innerHTML = clienstHtml;
     });
 }

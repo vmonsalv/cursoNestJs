@@ -6,6 +6,11 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <h1>Websocket - Client</h1>
 
     <span id="server-status">offline</span>
+
+    <ul id="clients-ul">
+      <li>asdfasd</li>
+    </ul>
+
   </div>
 `
 
