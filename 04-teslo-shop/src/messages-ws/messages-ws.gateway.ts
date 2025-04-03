@@ -1,20 +1,35 @@
-import { SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { SubscribeMessage, WebSocketGateway, WebSocketServer, WsException } from '@nestjs/websockets';
 import { MessagesWsService } from './messages-ws.service';
 import { Server, Socket } from 'socket.io';
 import { NewMEssageDto } from './dtos/new-message.dto';
+import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from 'src/auth/interfaces/jwt-payload.interface';
 
 @WebSocketGateway({ cors: true })
 export class MessagesWsGateway {
 
   @WebSocketServer() wss: Server;
 
-  constructor(private readonly messagesWsService: MessagesWsService) {}
+  constructor(
+    private readonly messagesWsService: MessagesWsService,
+    private readonly jwtService: JwtService
+  ) {}
 
   handleConnection(client: Socket) {
     // console.log(`Cliente conectado: ${client.id}`);
     // console.log(client)
     const token = client.handshake.headers.authentication as string;
-    console.log({token});
+    let payload: JwtPayload;
+
+    try {
+      payload = this.jwtService.verify(token);
+
+    } catch(error) {
+      // throw new WsException('');
+      client.disconnect();
+      return;
+    }
+
     this.messagesWsService.registerClient(client);
 
     // client.broadcast

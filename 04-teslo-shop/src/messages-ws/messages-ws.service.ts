@@ -10,7 +10,7 @@ export class MessagesWsService {
 
     private connectedClients: ConnectedClients = {};
 
-    registerClient (client: Socket) {
+    registerClient (client: Socket, id: string) {
         this.connectedClients[client.id] = client;
     }
 
