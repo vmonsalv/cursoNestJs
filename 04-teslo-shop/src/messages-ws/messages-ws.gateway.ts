@@ -25,8 +25,24 @@ export class MessagesWsGateway {
   }
 
   @SubscribeMessage('message-form-client')
-  onMessageFromClient(client: Socket, payload: NewMEssageDto) {
-    console.log(client.id, payload);
+  async onMessageFromClient(client: Socket, payload: NewMEssageDto) {
+    // client.emit emite mensaje solo al cliente
+    // client.emit('message-from-server', {
+    //   fullName: 'soyyo!',
+    //   message: payload.message || 'no message'
+    // });
+
+    // emitir a todos menos al cliente que envía el mensaje
+    // client.broadcast.emit('message-from-server', {
+    //   fullName: 'soyyo!',
+    //   message: payload.message || 'no message'
+    // });
+
+    // enviar mensajes a todos
+    this.wss.emit('message-from-server', {
+      fullName: 'soyyo!',
+      message: payload.message || 'no message'
+    });
   }
 
 }
